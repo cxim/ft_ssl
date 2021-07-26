@@ -12,6 +12,9 @@
 #include <stdlib.h>
 #include "ft_printf/includes/printf.h"
 
+#define MD5 "md5"
+#define SHA256 "sha256"
+
 typedef struct s_flags
 {
 	int p;
@@ -37,8 +40,7 @@ typedef struct s_all
 	t_flags *flags;
 }               t_all;
 
-#define MD5 "md5"
-#define SHA256 "sha256"
+
 
 
 

@@ -41,22 +41,62 @@ void free_foo(t_all *all)
     free(all);
 }
 
-void check_commands(char *command)
+void check_commands(char *command, t_all *all)
 {
-    if (ft_strcmp(command, SHA256))
+    if (ft_strcmp(command, SHA256) != 0 && ft_strcmp(command, MD5) != 0)
     {
         ft_printf("error");
         exit(1);
     }
+	ft_strcmp(command, SHA256) == 0 ? (all->commands->sha256 = 1) : (all->commands->md5 = 1);
+}
+
+int flag_foo(char param, t_all *all)
+{
+	if (param == 'p')
+	{
+		all->flags->p = 1;
+		return 1;
+	}
+	if (param == 'q')
+	{
+		all->flags->q = 1;
+		return 1;
+	}
+	if (param == 'r')
+	{
+		all->flags->r = 1;
+		return 1;
+	}
+	if (param == 's')
+	{
+		all->flags->s = 1;
+		return 1;
+	}
+	return 0;
+}
+
+int get_flags(char *str_flag, t_all *all)
+{
+	if (ft_strlen(str_flag) != 2)
+		return 0;
+	if (str_flag[0] != '-')
+		return 0;
+	return flag_foo(str_flag[1], all);
 }
 
 void parse_av(int ac, char **av, t_all *all)
 {
     int i = 2;
-    check_commands(av[1]);
+    int flags = 1;
+    check_commands(av[1], all);
+//	printf("%d %d\n", all->commands->sha256, all->commands->md5);
     while (i != ac)
     {
-
+		if (flags == 1)
+		{
+			flags = get_flags(av[i], all);
+		}
         i++;
     }
 }
@@ -68,10 +108,10 @@ int main(int ac, char ** av)
     all = init();
     parse_av(ac, av, all);
 
-    while (read(STDIN_FILENO , &str, 1) > 0)
-    {
-        all->std_in = add_symb(all->std_in, str);
-    }
+//    while (read(STDIN_FILENO , &str, 1) > 0)
+//    {
+//        all->std_in = add_symb(all->std_in, str);
+//    }
     ft_printf("%s", all->std_in);
     free_foo(all);
     return 0;
